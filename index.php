@@ -5,7 +5,7 @@ echo "Le nombre de mots du dico est : ".sizeof($dico)."<br>";
 $i=0;
 $p=0;
 $q=0;
-foreach($dico as $v){if(strlen($v)==15){$i+=1;}elseif(strpos($v, 'w')){$p+=1;}elseif(strpos($v, 'q')){$q+=1;};}
+foreach($dico as $v){if(strlen($v)==15){$i+=1;}if(stristr($v,'w')){$p+=1;}if(substr($v,-1,1)=="q"){$q+=1;};}
 echo "Mots faisant 15 charactères : ".$i."<br>";
 echo "Mots contenant la lettre W : ".$p."<br>";
 echo "Mots contenant la lettre Q : ".$q."<br>";
@@ -64,15 +64,22 @@ for($p=0;$p<100;$p++){
 	echo "Louer le top 10 des films coûterait : ".array_sum($rent)."$<br>";
 	echo "Le mois ayant vu le plus de sorties au cinéma est : ".$month[max(array_count_values($month))]."<br>";
 	for($i=0;$i<20;$i++){
-		array_push($blbl, array_search(min($mini), $mini));
 		$test=array_search(min($mini),$mini);
+		array_push($blbl, $test);
 		unset($mini[$test]);
-		}
-		echo "<br> Les 10 films à voir avec un budget limité sont : <br>";
+	}
+	echo "<br> Les 10 films à voir avec un budget limité sont : <br>";
 	for($i=0;$i<20;$i++){
-		if($i%2==0){
-		echo " ".$blbl[$i]."<br> ";
+		try{
+			if($i%2==0){
+				echo " ".$blbl[$i]."<br> ";
+				if($i%2!=0){
+					throw new Exception("Numero buggé");
+				}
+			}
+		}catch(Exception $e){
+			echo "Ceci est un ".$e->getMessage(),"\n";
+		}
 	}
-	}
-		echo "<br><br>";
-		?>
+	echo "<br><br>";
+	?>
